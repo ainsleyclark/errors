@@ -20,6 +20,12 @@
 
 ## How to use
 
+## Benchmarks
+
+```bash
+go test -benchmem -bench .
+```
+
 
 ## Credits
 Shout out to the incredible [Maria Letta](https://github.com/MariaLetta) for her excellent Gopher illustrations
