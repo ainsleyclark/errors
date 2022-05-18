@@ -13,3 +13,15 @@
 
 # Dependency directories (remove the comment below to include it)
 # vendor/
+
+node_modules
+
+# Editors
+../.idea
+.idea/*
+
+# Sensitive Info
+credentials.md
+
+# System Files
+.DS_Store
