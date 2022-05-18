@@ -1,7 +1,6 @@
 <div align="center">
 <img width=40% src="res/logo.svg" alt="notify logo" />
 
-<h2 align="center">Errors</h3>
 
 [![made-with-Go](https://img.shields.io/badge/Made%20with-Go-1f425f.svg)](http://golang.org)
 ![GitHub tag (latest SemVer)](https://img.shields.io/github/v/tag/ainsleyclark/errors?color=success&label=version&sort=semver)
@@ -14,6 +13,7 @@
 
 </div>
 
+<h2 align="center">Errors</h3>
 <p align="center">A drop-in replacement for Go errors, with some added sugar! Error handling in Go made easy with codes, messages and more. Failure is your domain!</p>
 
 # errors
