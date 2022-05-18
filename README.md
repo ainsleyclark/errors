@@ -15,6 +15,11 @@
 <h2 align="center">Errors</h3>
 <p align="center">A drop-in replacement for Go errors, with some added sugar! Error handling in Go made easy with codes, messages and more. Failure is your domain!</p>
 
-# errors
+
+## Why?
+
+## How to use
 
 
+## Credits
+Shout out to the incredible [Maria Letta](https://github.com/MariaLetta) for her excellent Gopher illustrations
