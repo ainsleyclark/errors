@@ -1,8 +1,7 @@
 <div align="center">
 <img width=40% src="res/logo.svg" alt="notify logo" />
 
-<h3 align="center">Go Mail</h3>
-  <p align="center">A cross platform mail driver for GoLang.</p>
+<h2 align="center">Errors</h3>
 
 [![made-with-Go](https://img.shields.io/badge/Made%20with-Go-1f425f.svg)](http://golang.org)
 ![GitHub tag (latest SemVer)](https://img.shields.io/github/v/tag/ainsleyclark/errors?color=success&label=version&sort=semver)
