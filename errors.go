@@ -8,6 +8,9 @@ import (
 	"bytes"
 	"fmt"
 	"net/http"
+	"runtime"
+	"strconv"
+	"strings"
 )
 
 // Application error codes.
@@ -43,6 +46,8 @@ type Error struct {
 	Message   string `json:"message"`
 	Operation string `json:"operation"`
 	Err       error  `json:"error"`
+	fileLine  string
+	pcs       []uintptr
 }
 
 // Error returns the string representation of the error
@@ -71,11 +76,30 @@ func (e *Error) Error() string {
 
 // New is a wrapper for the stdlib new function.
 func New(err error, message, code, op string) error {
+	_, file, line, _ := runtime.Caller(1)
+	pcs := make([]uintptr, 100)
+	_ = runtime.Callers(2, pcs)
 	return &Error{
 		Code:      code,
 		Message:   message,
 		Operation: op,
 		Err:       err,
+		fileLine:  file + ":" + strconv.Itoa(line),
+		pcs:       pcs,
+	}
+}
+
+func new(err error, message, code, op string) *Error {
+	_, file, line, _ := runtime.Caller(1)
+	pcs := make([]uintptr, 100)
+	_ = runtime.Callers(2, pcs)
+	return &Error{
+		Code:      code,
+		Message:   message,
+		Operation: op,
+		Err:       err,
+		fileLine:  file + ":" + strconv.Itoa(line),
+		pcs:       pcs,
 	}
 }
 
@@ -163,3 +187,46 @@ func (e *Error) HTTPStatusCode() int {
 	}
 	return status
 }
+
+// RuntimeFrames returns function/file/line information.
+func (e *Error) RuntimeFrames() *runtime.Frames {
+	return runtime.CallersFrames(e.pcs)
+}
+
+// ProgramCounters returns the slice of PC values associated
+// with the error.
+func (e *Error) ProgramCounters() []uintptr {
+	return e.pcs
+}
+
+// StackTrace returns a string representation of the errors
+// stacktrace, where each trace is separated by a newline
+// and tab '\t'.
+func (e *Error) StackTrace() string {
+	trace := make([]string, 0, 100)
+	rFrames := e.RuntimeFrames()
+	frame, ok := rFrames.Next()
+	line := strconv.Itoa(frame.Line)
+	trace = append(trace, frame.Function+"(): "+e.Message)
+
+	for ok {
+		trace = append(trace, "\t"+frame.File+":"+line)
+		frame, ok = rFrames.Next()
+	}
+
+	return strings.Join(trace, "\n")
+}
+
+//func (e *Error) StackTraceSlice() []string {
+//	trace := make([]string, 0, 100)
+//	for err != nil {
+//		e, ok := err.(*Error)
+//		if ok {
+//			trace = append(trace, e.StackTraceNoFormat()...)
+//		} else {
+//			trace = append(trace, err.Error())
+//		}
+//		err = Unwrap(err)
+//	}
+//	return trace
+//}

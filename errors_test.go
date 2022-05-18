@@ -198,3 +198,30 @@ func TestError_HTTPStatusCode(t *testing.T) {
 		})
 	}
 }
+
+func TestError_ProgramCounters(t *testing.T) {
+	e := new(fmt.Errorf("error"), "message", INTERNAL, "op")
+	got := e.ProgramCounters()
+	want := 100
+	if !reflect.DeepEqual(len(got), want) {
+		t.Fatalf("expecting %d, got %d", want, got)
+	}
+}
+
+func TestError_RuntimeFrames(t *testing.T) {
+	e := new(fmt.Errorf("error"), "message", INTERNAL, "op")
+	got := e.RuntimeFrames()
+	fmt.Println(got.Next())
+	//if !reflect.DeepEqual(len(got), want) {
+	//	t.Fatalf("expecting %d, got %d", want, got)
+	//}
+}
+
+func TestError_StackTrace(t *testing.T) {
+	e := new(fmt.Errorf("error"), "message", INTERNAL, "op")
+	got := e.StackTrace()
+	fmt.Println(got)
+	//if !reflect.DeepEqual(len(got), want) {
+	//	t.Fatalf("expecting %d, got %d", want, got)
+	//}
+}
