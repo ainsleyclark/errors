@@ -1,6 +1,5 @@
 <div align="center">
-<img width=40% src="res/logo.svg" alt="notify logo" />
-
+<img height="250" src="res/logo.svg" alt="Errors Logo" />
 
 [![made-with-Go](https://img.shields.io/badge/Made%20with-Go-1f425f.svg)](http://golang.org)
 ![GitHub tag (latest SemVer)](https://img.shields.io/github/v/tag/ainsleyclark/errors?color=success&label=version&sort=semver)
