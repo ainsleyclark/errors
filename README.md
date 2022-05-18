@@ -12,8 +12,9 @@
 
 </div>
 
-<h2 align="center">Errors</h3>
-<p align="center">A drop-in replacement for Go errors, with some added sugar! Error handling in Go made easy with codes, messages and more. Failure is your domain!</p>
+
+# Errors
+A drop-in replacement for Go errors, with some added sugar! Error handling in Go made easy with codes, messages and more. Failure is your domain!
 
 
 ## Why?
