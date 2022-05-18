@@ -52,7 +52,7 @@ func (e *Error) Error() string {
 
 	// Print the current operation in our stack, if any.
 	if e.Operation != "" {
-		fmt.Fprintf(&buf, "%s: ", e.Operation)
+		buf.WriteString(fmt.Sprintf("%s: ", e.Operation))
 	}
 
 	// If wrapping an error, print its HasError() message.
@@ -61,7 +61,7 @@ func (e *Error) Error() string {
 		buf.WriteString(e.Err.Error())
 	} else {
 		if e.Code != "" {
-			_, _ = fmt.Fprintf(&buf, "<%s> ", e.Code)
+			buf.WriteString(fmt.Sprintf("<%s> ", e.Code))
 		}
 		buf.WriteString(e.Message)
 	}
@@ -158,6 +158,8 @@ func (e *Error) HTTPStatusCode() int {
 		return http.StatusNotFound
 	case EXPIRED:
 		return http.StatusPaymentRequired
+	case MAXIMUMATTEMPTS:
+		return http.StatusTooManyRequests
 	}
 	return status
 }
