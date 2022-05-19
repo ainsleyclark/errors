@@ -11,9 +11,10 @@
 
 </div>
 
-
 # Errors
-A drop-in replacement for Go errors, with some added sugar! Error handling in Go made easy with codes, messages and more. Failure is your domain!
+
+A drop-in replacement for Go errors, with some added sugar! Error handling in Go made easy with codes, messages and
+more. Failure is your domain!
 
 ## Why?
 
@@ -25,7 +26,9 @@ A drop-in replacement for Go errors, with some added sugar! Error handling in Go
 
 ## Available Error Codes
 
-
+Below is a list of available error codes within the errors package. It's tempting to build fine-grained error codes, but
+it's a lot easier to manage more generic codes. The codes below are a good start to set off on, if you feel there is one
+missing, please open a [pull request](https://github.com/ainsleyclark/errors/pulls).
 
 | Code            | Value                | Notes                          |
 |-----------------|:---------------------|:-------------------------------|
@@ -37,6 +40,7 @@ A drop-in replacement for Go errors, with some added sugar! Error handling in Go
 | EXPIRED         | `"expired"`          | Subscription expired.          |
 
 ## Benchmarks
+
 Ran on 19/05/2022
 
 ```bash
@@ -59,6 +63,6 @@ BenchmarkError_HTTPStatusCode-16        1000000000               0.6282 ns/op   
 
 ## Contributing
 
-
 ## Credits
+
 Shout out to the incredible [Maria Letta](https://github.com/MariaLetta) for her excellent Gopher illustrations
