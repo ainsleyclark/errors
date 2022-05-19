@@ -43,12 +43,16 @@ var (
 
 // Error defines a standard application error.
 type Error struct {
-	Code      string `json:"code" bson:"code"`
-	Message   string `json:"message" bson:"message"`
-	Operation string `json:"operation" bson:"operation"`
-	Err       error  `json:"error" bson:"err"`
-	fileLine  string
-	pcs       []uintptr
+	// The application error code.
+	Code string `json:"code" bson:"code"`
+	// A human-readable message to send back to the end user.
+	Message string `json:"message" bson:"message"`
+	// Defines what operation is currently being run.
+	Op string `json:"operation" bson:"op"`
+	// The error that was returned from the caller.
+	Err      error `json:"error" bson:"err"`
+	fileLine string
+	pcs      []uintptr
 }
 
 // Error returns the string representation of the error

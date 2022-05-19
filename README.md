@@ -18,38 +18,66 @@ more. Failure is your domain!
 
 ## Why?
 
+Errors are as important in your domain and application as the entities such as a User or Database. They should be
+treated as individual types. Not only do they give a clear meaning to the users of the application if something goes
+wrong, they can save hours of debugging time when used effectively.
+
+Coupled with consistent and effective use of a logging package, we are able to tell if something goes wrong, where it
+went wrong, how it went wrong and.
+
+
 ## How to use
+
+### The Error Type
+
+```go
+// Error defines a standard application error.
+type Error struct {
+	// The application error code.
+	Code string `json:"code" bson:"code"`
+	// A human-readable message to send back to the end user.
+	Message string `json:"message" bson:"message"`
+	// Defines what operation is currently being run.
+	Op string `json:"operation" bson:"op"`
+	// The error that was returned from the caller.
+	Err      error `json:"error" bson:"err"`
+}
+```
+
+### Returning
 
 ```go
 func (s *UserStore) Find(ctx context.Context, schema string, id int64) (core.User, error) {
-	const op = "UserStore.Find"
+const op = "UserStore.Find"
 
-	q := s.Builder().
-	From(schema+"."+TableName).
-	Where("id", "=", id).
-	Limit(1)
+q := s.Builder().
+From(schema+"."+TableName).
+Where("id", "=", id).
+Limit(1)
 
-	var out core.User
-	err := s.DB().GetContext(ctx, &out, q.Build())
-	if err == sql.ErrNoRows {
-		return core.User{}, &errors.Error{
-			Code:      errors.NOTFOUND,
-			Message:   fmt.Sprintf("Error obtaining User with the ID: %d", id),
-			Operation: op,
-			Err:       err,
-		}
-	} else if err != nil {
-		return core.User{}, &errors.Error{
-			Code:      errors.INTERNAL,
-			Message:   "Error executing SQL query"
-			Operation: op,
-			Err:       err,
-		}
-	}
+var out core.User
+err := s.DB().GetContext(ctx, &out, q.Build())
+if err == sql.ErrNoRows {
+return core.User{}, &errors.Error{
+Code:      errors.NOTFOUND,
+Message:   fmt.Sprintf("Error obtaining User with the ID: %d", id),
+Operation: op,
+Err:       err,
+}
+} else if err != nil {
+return core.User{}, &errors.Error{
+Code:      errors.INTERNAL,
+Message:   "Error executing SQL query"
+Operation: op,
+Err:       err,
+}
+}
 
-	return out, nil
+return out, nil
 }
 ```
+
+### Checking Types
 
 ## Available Error Codes
 
