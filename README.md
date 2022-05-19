@@ -1,5 +1,6 @@
 <div align="center">
 <img height="250" src="res/logo.svg" alt="Errors Logo" style="margin-bottom: 1rem" />
+</div>
 
 [![made-with-Go](https://img.shields.io/badge/Made%20with-Go-1f425f.svg)](http://golang.org)
 ![GitHub tag (latest SemVer)](https://img.shields.io/github/v/tag/ainsleyclark/errors?color=success&label=version&sort=semver)
@@ -9,12 +10,18 @@
 [![codecov](https://codecov.io/gh/ainsleyclark/errors/branch/master/graph/badge.svg?token=K27L8LS7DA)](https://codecov.io/gh/ainsleyclark/errors)
 [![go.dev reference](https://img.shields.io/badge/go.dev-reference-007d9c?logo=go&logoColor=white&style=flat)](https://pkg.go.dev/github.com/ainsleyclark/errors)
 
-</div>
-
 # Errors
 
 A drop-in replacement for Go errors, with some added sugar! Error handling in Go made easy with codes, messages and
 more. Failure is your domain!
+
+## Overview
+
+- ✅ Multiple mail drivers for your needs or even create your own custom Mailer.
+- ✅ Direct dependency free, all requests are made with the standard lib http.Client.
+- ✅ Send attachments with two struct fields, it's extremely simple.
+- ✅ Send CC & BCC messages.
+- ✅ Extremely lightweight.
 
 ## Why?
 
@@ -24,7 +31,6 @@ wrong, they can save hours of debugging time when used effectively.
 
 Coupled with consistent and effective use of a logging package, we are able to tell if something goes wrong, where it
 went wrong, how it went wrong and.
-
 
 ## How to use
 
