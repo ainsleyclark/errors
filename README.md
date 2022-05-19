@@ -32,6 +32,12 @@ wrong, they can save hours of debugging time when used effectively.
 Coupled with consistent and effective use of a logging package, we are able to tell if something goes wrong, where it
 went wrong, how it went wrong and.
 
+## Installation
+
+```bash
+go get -u github.com/ainsleyclark/errors
+```
+
 ## How to use
 
 See below on some common examples on how to use the error package.
