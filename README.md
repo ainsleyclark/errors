@@ -17,11 +17,12 @@ more. Failure is your domain!
 
 ## Overview
 
-- ✅ Multiple mail drivers for your needs or even create your own custom Mailer.
-- ✅ Direct dependency free, all requests are made with the standard lib http.Client.
-- ✅ Send attachments with two struct fields, it's extremely simple.
-- ✅ Send CC & BCC messages.
-- ✅ Extremely lightweight.
+- ✅ A humble selection of errors codes that touches most bases.
+- ✅ User friendly error messages for returning via an API for example.
+- ✅ Operation support `(Struct.Method)` naming convention.
+- ✅ Retrieve call stacks as preformatted or as a string slice.
+- ✅ Generate HTTP response codes from all error types.
+- ✅ Extremely lightweight with no external depenencies.
 
 ## Why?
 
