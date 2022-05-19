@@ -73,6 +73,21 @@ func (s *UserStore) Find(ctx context.Context, schema string, id int64) (core.Use
 }
 ```
 
+Let's assume that an SQL error occurred during the execution of the query and no rows were returned. Without any context
+of the error, we simply get:
+
+```
+syntax error near SELECT
+```
+
+However, by calling `err.Error()` on our wrapped error, it will return:
+
+```
+<internal> /Users/me/project/store/users.go:27 - UserStore.Find: syntax error near SELECT, Error executing SQL query
+```
+
+Now we know exactly where the error occured, why it occured and what file line and method.
+
 ### Checking Types
 
 ```go

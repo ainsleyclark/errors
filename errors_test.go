@@ -5,6 +5,7 @@
 package errors
 
 import (
+	"database/sql"
 	"fmt"
 	"net/http"
 	"os"
@@ -18,6 +19,8 @@ func TestError_Error(t *testing.T) {
 	if err != nil {
 		t.Fatalf("failed: %s", err.Error())
 	}
+
+	sql.ErrNoRows
 
 	tt := map[string]struct {
 		input *Error
