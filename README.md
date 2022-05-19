@@ -51,6 +51,10 @@ type Error struct {
 
 ### Returning
 
+Below is an example of returning a formatted `Error` type in a database call for obtaining a singular user. If no rows
+are found, we return a `NOTFOUND` code. Likewise if there was an error executing the SQL query, we return a `NOTFOUND`
+code with user-friendly messages.
+
 ```go
 func (s *UserStore) Find(ctx context.Context, schema string, id int64) (core.User, error) {
 	const op = "UserStore.Find"
