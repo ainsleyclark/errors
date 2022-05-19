@@ -50,13 +50,10 @@ type Error struct {
 func (s *UserStore) Find(ctx context.Context, schema string, id int64) (core.User, error) {
 	const op = "UserStore.Find"
 
-	q := s.Builder().
-	From(schema+"."+TableName).
-	Where("id", "=", id).
-	Limit(1)
+	q := "SELECT from users WHERE ID = ? LIMIT 1"
 
 	var out core.User
-	err := s.DB().GetContext(ctx, &out, q.Build())
+	err := s.DB().GetContext(ctx, &out, q.Build(), id)
 	if err == sql.ErrNoRows {
 		return core.User{}, &errors.Error{
 			Code:      errors.NOTFOUND,
