@@ -92,6 +92,16 @@ Now we know exactly where the error occurred, why it occurred and what file line
 
 ### Checking Types
 
+The package comes built in with handy functions for obtaining messages, codes and casting to the Error type, see below
+for some examples.
+
+#### To Error
+
+```go
+e := errors.New("error")
+err := errors.ToError(e)
+```
+
 #### Obtaining a message
 
 ```go
