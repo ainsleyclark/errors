@@ -19,10 +19,10 @@ const (
 	// CONFLICT - An action cannot be performed.
 	CONFLICT = "conflict"
 	// INTERNAL - Error within the application.
-	INTERNAL = "internal" // Internal error
-	// INVALID - Validation failed
-	INVALID = "invalid" // Validation failed
-	// NOTFOUND - Entity does not exist
+	INTERNAL = "internal"
+	// INVALID - Validation failed.
+	INVALID = "invalid"
+	// NOTFOUND - Entity does not exist.
 	NOTFOUND = "not_found"
 	// UNKNOWN - Application unknown error.
 	UNKNOWN = "unknown"
@@ -43,10 +43,10 @@ var (
 
 // Error defines a standard application error.
 type Error struct {
-	Code      string `json:"code"`
-	Message   string `json:"message"`
-	Operation string `json:"operation"`
-	Err       error  `json:"error"`
+	Code      string `json:"code" bson:"code"`
+	Message   string `json:"message" bson:"message"`
+	Operation string `json:"operation" bson:"operation"`
+	Err       error  `json:"error" bson:"err"`
 	fileLine  string
 	pcs       []uintptr
 }

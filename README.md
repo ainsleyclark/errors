@@ -15,14 +15,26 @@
 # Errors
 A drop-in replacement for Go errors, with some added sugar! Error handling in Go made easy with codes, messages and more. Failure is your domain!
 
-
 ## Why?
 
 ## How to use
 
+```go
+
+```
+
 ## Available Error Codes
 
 
+
+| Code            | Value                | Notes                          |
+|-----------------|:---------------------|:-------------------------------|
+| CONFLICT        | `"conflict"`         | An action cannot be performed. |
+| INVALID         | `"invalid"`          | Validation failed.             |
+| NOTFOUND        | `"not_found"`        | Entity does not exist.         |
+| UNKNOWN         | `"unknown"`          | Application unknown error.     |
+| MAXIMUMATTEMPTS | `"maximum_attempts"` | More than allowed action.      |
+| EXPIRED         | `"expired"`          | Subscription expired.          |
 
 ## Benchmarks
 Ran on 19/05/2022
