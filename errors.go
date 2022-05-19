@@ -84,11 +84,13 @@ func (e *Error) Error() string {
 	return strings.TrimSuffix(strings.TrimSpace(buf.String()), ",")
 }
 
+// NewE returns an Error with the DefaultCode.
 func NewE(err error, message, op string) *Error {
 	return newError(err, message, DefaultCode, op)
 }
 
-// ErrorF - TODO
+// ErrorF returns an Error with the DefaultCode and
+// formatted message arguments.
 func ErrorF(err error, op, format string, args ...any) *Error {
 	return NewE(err, fmt.Sprintf(format, args...), op)
 }
@@ -99,7 +101,7 @@ func (e *Error) FileLine() string {
 	return e.fileLine
 }
 
-// Unwrap - TODO
+// Unwrap unwraps the original error message.
 func (e *Error) Unwrap() error {
 	return e.Err
 }
