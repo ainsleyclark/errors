@@ -20,3 +20,38 @@ func BenchmarkNewInternal(b *testing.B) {
 		_ = NewE(errors.New("error"), "message", INTERNAL)
 	}
 }
+
+func BenchmarkError_Error(b *testing.B) {
+	e := NewE(errors.New("error"), "message", INTERNAL)
+	for i := 0; i < b.N; i++ {
+		_ = e.Error()
+	}
+}
+
+func BenchmarkError_Code(b *testing.B) {
+	e := NewE(errors.New("error"), "message", INTERNAL)
+	for i := 0; i < b.N; i++ {
+		_ = Code(e)
+	}
+}
+
+func BenchmarkError_Message(b *testing.B) {
+	e := NewE(errors.New("error"), "message", INTERNAL)
+	for i := 0; i < b.N; i++ {
+		_ = Message(e)
+	}
+}
+
+func BenchmarkError_ToError(b *testing.B) {
+	e := NewE(errors.New("error"), "message", INTERNAL)
+	for i := 0; i < b.N; i++ {
+		_ = ToError(e)
+	}
+}
+
+func BenchmarkError_HTTPStatusCode(b *testing.B) {
+	e := NewE(errors.New("error"), "message", INTERNAL)
+	for i := 0; i < b.N; i++ {
+		_ = e.HTTPStatusCode()
+	}
+}
