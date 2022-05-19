@@ -87,7 +87,15 @@ func TestNewE(t *testing.T) {
 }
 
 func TestErrorf(t *testing.T) {
-
+	want := &Error{
+		Code:      INTERNAL,
+		Message:   "message: hello",
+		Operation: "op",
+		Err:       fmt.Errorf("error"),
+		fileLine:  "/Users/ainsley/Desktop/Reddico/tools/errors/errors.go",
+	}
+	got := ErrorF(fmt.Errorf("error"), "op", "message: %s", "hello")
+	UtilTestError(t, want, got)
 }
 
 func TestError_FileLine(t *testing.T) {

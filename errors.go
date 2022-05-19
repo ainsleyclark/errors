@@ -88,15 +88,9 @@ func NewE(err error, message, op string) *Error {
 	return newError(err, message, DefaultCode, op)
 }
 
-// NewF - TODO
-func NewF(err error, format string, args ...any) *Error {
-	message := fmt.Sprintf(format, args...)
-	return NewE(err, message, "")
-}
-
 // ErrorF - TODO
-func ErrorF(err error, format string, args ...any) *Error {
-	return NewF(err, format, args...)
+func ErrorF(err error, op, format string, args ...any) *Error {
+	return NewE(err, fmt.Sprintf(format, args...), op)
 }
 
 // FileLine returns the file and line in which the error
