@@ -30,6 +30,8 @@ went wrong, how it went wrong and.
 
 ### The Error Type
 
+The error type
+
 ```go
 // Error defines a standard application error.
 type Error struct {
