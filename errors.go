@@ -48,7 +48,7 @@ type Error struct {
 	// A human-readable message to send back to the end user.
 	Message string `json:"message" bson:"message"`
 	// Defines what operation is currently being run.
-	Op string `json:"operation" bson:"op"`
+	Operation string `json:"operation" bson:"op"`
 	// The error that was returned from the caller.
 	Err      error `json:"error" bson:"err"`
 	fileLine string

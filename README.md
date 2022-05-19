@@ -28,9 +28,12 @@ went wrong, how it went wrong and.
 
 ## How to use
 
+See below on some common examples on how to use the error package.
+
 ### The Error Type
 
-The error type
+The `Error` struct below describes an application error thats returned when using the `New...()` constructors such
+as `NewInternal()`. See bwlo on more detail on what each field contains.
 
 ```go
 // Error defines a standard application error.
@@ -59,7 +62,7 @@ func (s *UserStore) Find(ctx context.Context, schema string, id int64) (core.Use
 	if err == sql.ErrNoRows {
 		return core.User{}, errors.NewNotFound(err, fmt.Sprintf("Error obtaining User with the ID: %d", id), op)
 	} else if err != nil {
-		return core.User{}, errors.NewNotFound(err, "Error executing SQL query", op)
+		return core.User{}, errors.NewInternal(err, "Error executing SQL query", op)
 	}
 
 	return out, nil
@@ -67,6 +70,17 @@ func (s *UserStore) Find(ctx context.Context, schema string, id int64) (core.Use
 ```
 
 ### Checking Types
+
+```go
+
+```
+
+### Output
+
+```go
+
+```
+
 
 ## Available Error Codes
 
