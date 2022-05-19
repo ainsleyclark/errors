@@ -55,20 +55,35 @@ func TestError_Error(t *testing.T) {
 	}
 }
 
-func TestNew(t *testing.T) {
-	//want := &Error{
-	//	Code:      INVALID,
-	//	Message:   "message",
-	//	Operation: "op",
-	//	Err:       fmt.Errorf("error"),
-	//}
-	//got := New(fmt.Errorf("error"), "message", INVALID)
-	//
-	//fmt.Println(got.fileLine)
-	//
-	//if !reflect.DeepEqual(want, got) {
-	//	t.Fatalf("expecting %+v, got %+v", want, got)
-	//}
+func UtilTestError(t *testing.T, want, got *Error) {
+	t.Helper()
+	if !reflect.DeepEqual(want.Err, got.Err) {
+		t.Fatalf("expecting %s, got %s", want.Err, got.Err)
+	}
+	if !reflect.DeepEqual(want.Message, got.Message) {
+		t.Fatalf("expecting %s, got %s", want.Message, got.Message)
+	}
+	if !reflect.DeepEqual(want.Code, got.Code) {
+		t.Fatalf("expecting %s, got %s", want.Code, got.Code)
+	}
+	if !reflect.DeepEqual(want.Operation, got.Operation) {
+		t.Fatalf("expecting %s, got %s", want.Operation, got.Operation)
+	}
+	if !strings.Contains(got.fileLine, want.fileLine) {
+		t.Fatalf("expecting %s to contain, got %s", want.fileLine, got.fileLine)
+	}
+}
+
+func TestNewE(t *testing.T) {
+	want := &Error{
+		Code:      INTERNAL,
+		Message:   "message",
+		Operation: "op",
+		Err:       fmt.Errorf("error"),
+		fileLine:  "/Users/ainsley/Desktop/Reddico/tools/errors/errors_test.go",
+	}
+	got := NewE(fmt.Errorf("error"), "message", "op")
+	UtilTestError(t, want, got)
 }
 
 func TestErrorf(t *testing.T) {
@@ -148,7 +163,7 @@ func TestError_HTTPStatusCode(t *testing.T) {
 }
 
 func TestError_ProgramCounters(t *testing.T) {
-	e := New(fmt.Errorf("error"), "message", "op")
+	e := NewE(fmt.Errorf("error"), "message", "op")
 	got := e.ProgramCounters()
 	want := 100
 	if !reflect.DeepEqual(len(got), want) {
@@ -157,7 +172,7 @@ func TestError_ProgramCounters(t *testing.T) {
 }
 
 func TestError_RuntimeFrames(t *testing.T) {
-	e := New(fmt.Errorf("error"), "message", "op")
+	e := NewE(fmt.Errorf("error"), "message", "op")
 	got := e.RuntimeFrames()
 	frame, _ := got.Next()
 	want := "github.com/ainsleyclark/errors.TestError_RuntimeFrames"
@@ -167,7 +182,7 @@ func TestError_RuntimeFrames(t *testing.T) {
 }
 
 func TestError_StackTrace(t *testing.T) {
-	e := New(fmt.Errorf("error"), "message", "op")
+	e := NewE(fmt.Errorf("error"), "message", "op")
 	got := e.StackTrace()
 	want := "github.com/ainsleyclark/errors.TestError_StackTrace(): message"
 	if !strings.Contains(got, want) {
@@ -176,7 +191,7 @@ func TestError_StackTrace(t *testing.T) {
 }
 
 func TestError_StackTraceSlice(t *testing.T) {
-	e := New(fmt.Errorf("error"), "message", "op")
+	e := NewE(fmt.Errorf("error"), "message", "op")
 	got := e.StackTraceSlice()[0]
 	want := "github.com/ainsleyclark/errors.TestError_StackTrace(): message"
 	if reflect.DeepEqual(want, got) {

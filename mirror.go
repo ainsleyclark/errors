@@ -6,17 +6,22 @@ package errors
 
 import "errors"
 
-// Unwrap calls the Go builtin errors.UnUnwrap
+// New is a wrapper for the stdlib new function.
+func New(message string) error {
+	return errors.New(message)
+}
+
+// Unwrap calls the stdlib errors.UnUnwrap.
 func Unwrap(err error) error {
 	return errors.Unwrap(err)
 }
 
-// Is calls the Go builtin errors.Is
+// Is calls the stdlib errors.Is.
 func Is(err, target error) bool {
 	return errors.Is(err, target)
 }
 
-// As calls the Go builtin errors.As
+// As calls the stdlib errors.As.
 func As(err error, target any) bool {
 	return errors.As(err, target)
 }

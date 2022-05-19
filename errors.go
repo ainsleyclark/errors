@@ -84,26 +84,30 @@ func (e *Error) Error() string {
 	return strings.TrimSuffix(strings.TrimSpace(buf.String()), ",")
 }
 
-// New is a wrapper for the stdlib new function.
-func New(err error, message, op string) *Error {
+func NewE(err error, message, op string) *Error {
 	return newError(err, message, DefaultCode, op)
 }
 
-// Newf - TODO
-func Newf(err error, format string, args ...any) *Error {
+// NewF - TODO
+func NewF(err error, format string, args ...any) *Error {
 	message := fmt.Sprintf(format, args...)
-	return New(err, message, "")
+	return NewE(err, message, "")
 }
 
-// Errorf - TODO
-func Errorf(err error, format string, args ...any) *Error {
-	return Newf(err, format, args...)
+// ErrorF - TODO
+func ErrorF(err error, format string, args ...any) *Error {
+	return NewF(err, format, args...)
 }
 
 // FileLine returns the file and line in which the error
 // occurred.
 func (e *Error) FileLine() string {
 	return e.fileLine
+}
+
+// Unwrap - TODO
+func (e *Error) Unwrap() error {
+	return e.Err
 }
 
 // Wrap returns an error annotating err with a stack trace
