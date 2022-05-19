@@ -92,12 +92,20 @@ Now we know exactly where the error occurred, why it occurred and what file line
 
 ### Checking Types
 
-Cast to an `Error` type
+#### Obtaining a message
 
 ```go
 err := errors.NewInternal(errors.New("error"), "My Message", "Operation")
-msg := errors.Messsage(err)
-fmt.Println(msg) // Output My Message
+msg := errors.Message(err)
+fmt.Println(msg) // Output - "My Message"
+```
+
+#### Obtaining an error code
+
+```go
+err := errors.NewInternal(errors.New("error"), "My Message", "Operation")
+code := errors.Code(err)
+fmt.Println(code) // Output - "internal"
 ```
 
 ## Available Error Codes
