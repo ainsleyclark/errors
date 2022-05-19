@@ -21,7 +21,34 @@ more. Failure is your domain!
 ## How to use
 
 ```go
+func (s *UserStore) Find(ctx context.Context, schema string, id int64) (core.User, error) {
+	const op = "UserStore.Find"
 
+	q := s.Builder().
+	From(schema+"."+TableName).
+	Where("id", "=", id).
+	Limit(1)
+
+	var out core.User
+	err := s.DB().GetContext(ctx, &out, q.Build())
+	if err == sql.ErrNoRows {
+		return core.User{}, &errors.Error{
+			Code:      errors.NOTFOUND,
+			Message:   fmt.Sprintf("Error obtaining Blacklist item with the ID: %d", id),
+			Operation: op,
+			Err:       err,
+		}
+	} else if err != nil {
+		return core.User{}, &errors.Error{
+			Code:      errors.INTERNAL,
+			Message:   "Error executing SQL query"
+			Operation: op,
+			Err:       err,
+		}
+	}
+
+	return out, nil
+}
 ```
 
 ## Available Error Codes
