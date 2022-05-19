@@ -69,9 +69,6 @@ func UtilTestError(t *testing.T, want, got *Error) {
 	if !reflect.DeepEqual(want.Operation, got.Operation) {
 		t.Fatalf("expecting %s, got %s", want.Operation, got.Operation)
 	}
-	if !strings.Contains(got.fileLine, want.fileLine) {
-		t.Fatalf("expecting %s to contain, got %s", want.fileLine, got.fileLine)
-	}
 }
 
 func TestNewE(t *testing.T) {
@@ -80,7 +77,6 @@ func TestNewE(t *testing.T) {
 		Message:   "message",
 		Operation: "op",
 		Err:       fmt.Errorf("error"),
-		fileLine:  "/Users/ainsley/Desktop/Reddico/tools/errors/errors_test.go",
 	}
 	got := NewE(fmt.Errorf("error"), "message", "op")
 	UtilTestError(t, want, got)
@@ -92,7 +88,6 @@ func TestErrorf(t *testing.T) {
 		Message:   "message: hello",
 		Operation: "op",
 		Err:       fmt.Errorf("error"),
-		fileLine:  "/Users/ainsley/Desktop/Reddico/tools/errors/errors.go",
 	}
 	got := ErrorF(fmt.Errorf("error"), "op", "message: %s", "hello")
 	UtilTestError(t, want, got)
