@@ -65,15 +65,15 @@ func (s *UserStore) Find(ctx context.Context, schema string, id int64) (core.Use
 			Err:       err,
 		}
 	} else if err != nil {
-	return core.User{}, &errors.Error{
-		Code:      errors.INTERNAL,
-		Message:   "Error executing SQL query"
-		Operation: op,
-		Err:       err,
+		return core.User{}, &errors.Error{
+			Code:      errors.INTERNAL,
+			Message:   "Error executing SQL query"
+			Operation: op,
+			Err:       err,
+		}
 	}
-}
 
-return out, nil
+	return out, nil
 }
 ```
 
