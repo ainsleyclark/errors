@@ -57,19 +57,9 @@ func (s *UserStore) Find(ctx context.Context, schema string, id int64) (core.Use
 	var out core.User
 	err := s.DB().GetContext(ctx, &out, q.Build(), id)
 	if err == sql.ErrNoRows {
-		return core.User{}, &errors.Error{
-			Code:      errors.NOTFOUND,
-			Message:   fmt.Sprintf("Error obtaining User with the ID: %d", id),
-			Operation: op,
-			Err:       err,
-		}
+		return core.User{}, errors.NewNotFound(err, fmt.Sprintf("Error obtaining User with the ID: %d", id), op)
 	} else if err != nil {
-		return core.User{}, &errors.Error{
-			Code:      errors.INTERNAL,
-			Message:   "Error executing SQL query"
-			Operation: op,
-			Err:       err,
-		}
+		return core.User{}, errors.NewNotFound(err, "Error executing SQL query", op)
 	}
 
 	return out, nil
