@@ -36,7 +36,5 @@ go test -benchmem -bench .
 ## Contributing
 
 
-
-
 ## Credits
 Shout out to the incredible [Maria Letta](https://github.com/MariaLetta) for her excellent Gopher illustrations
