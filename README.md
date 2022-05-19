@@ -73,6 +73,14 @@ func (s *UserStore) Find(ctx context.Context, schema string, id int64) (core.Use
 }
 ```
 
+### Checking Types
+
+```go
+
+```
+
+### Output
+
 Let's assume that an SQL error occurred during the execution of the query and no rows were returned. Without any context
 of the error, we simply get:
 
@@ -86,20 +94,7 @@ However, by calling `err.Error()` on our wrapped error, it will return:
 <internal> /Users/me/project/store/users.go:27 - UserStore.Find: syntax error near SELECT, Error executing SQL query
 ```
 
-Now we know exactly where the error occured, why it occured and what file line and method.
-
-### Checking Types
-
-```go
-
-```
-
-### Output
-
-```go
-
-```
-
+Now we know exactly where the error occurred, why it occurred and what file line and method.
 
 ## Available Error Codes
 
@@ -140,6 +135,12 @@ BenchmarkError_HTTPStatusCode-16        1000000000               0.6282 ns/op   
 
 ## Contributing
 
+Please feel free to make a pull request if you think something should be added to this package!
+
 ## Credits
 
-Shout out to the incredible [Maria Letta](https://github.com/MariaLetta) for her excellent Gopher illustrations
+Shout out to the incredible [Maria Letta](https://github.com/MariaLetta) for her excellent Gopher illustrations.
+
+## Licence
+
+Code Copyright 2021 Go Mail. Code released under the [MIT Licence](LICENSE).
