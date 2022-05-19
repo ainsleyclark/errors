@@ -34,7 +34,7 @@ func (s *UserStore) Find(ctx context.Context, schema string, id int64) (core.Use
 	if err == sql.ErrNoRows {
 		return core.User{}, &errors.Error{
 			Code:      errors.NOTFOUND,
-			Message:   fmt.Sprintf("Error obtaining Blacklist item with the ID: %d", id),
+			Message:   fmt.Sprintf("Error obtaining User with the ID: %d", id),
 			Operation: op,
 			Err:       err,
 		}
