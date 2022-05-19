@@ -21,7 +21,7 @@ more. Failure is your domain!
 - ✅ Operation support `(Struct.Method)` naming convention.
 - ✅ Retrieve call stacks as preformatted or as a string slice.
 - ✅ Generate HTTP response codes from all error types.
-- ✅ Extremely lightweight with no external depenencies.
+- ✅ Extremely lightweight with no external dependencies.
 
 ## Why?
 
@@ -44,8 +44,8 @@ See below on some common examples on how to use the error package.
 
 ### The Error Type
 
-The `Error` struct below describes an application error thats returned when using the `New...()` constructors such
-as `NewInternal()`. See bwlo on more detail on what each field contains.
+The `Error` struct below describes an application error that's returned when using the `New...()` constructors such
+as `NewInternal()`. See below on more detail on what each field contains.
 
 ```go
 // Error defines a standard application error.
