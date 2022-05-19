@@ -3,7 +3,6 @@
 </div>
 
 [![made-with-Go](https://img.shields.io/badge/Made%20with-Go-1f425f.svg)](http://golang.org)
-![GitHub tag (latest SemVer)](https://img.shields.io/github/v/tag/ainsleyclark/errors?color=success&label=version&sort=semver)
 [![Go Report Card](https://goreportcard.com/badge/github.com/ainsleyclark/errors)](https://goreportcard.com/report/github.com/ainsleyclark/errors)
 [![Maintainability](https://api.codeclimate.com/v1/badges/b3afd7bf115341995077/maintainability)](https://codeclimate.com/github/ainsleyclark/errors/maintainability)
 [![Test](https://github.com/ainsleyclark/errors/actions/workflows/test.yml/badge.svg?branch=master)](https://github.com/ainsleyclark/errors/actions/workflows/test.yml)
