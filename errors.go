@@ -1,6 +1,7 @@
 // Copyright 2022 Ainsley Clark. All rights reserved.
 // Use of this source code is governed by a MIT-style
 // license that can be found in the LICENSE file.
+// @see https://blog.carlmjohnson.net/post/2020/working-with-errors-as/
 
 package errors
 
@@ -51,56 +52,41 @@ type Error struct {
 }
 
 // Error returns the string representation of the error
-// message.
+// message by implementing the error interface.
 func (e *Error) Error() string {
 	var buf bytes.Buffer
 
-	// Print the current operation in our stack, if any.
-	if e.Operation != "" {
-		buf.WriteString(fmt.Sprintf("%s: ", e.Operation))
+	// Print the error code if there is one.
+	if e.Code != "" {
+		buf.WriteString("<" + e.Code + "> ")
 	}
 
-	// If wrapping an error, print its HasError() message.
-	// Otherwise, print the error code & message.
+	// Print the file-line, if any.
+	if e.fileLine != "" {
+		buf.WriteString(e.fileLine + " - ")
+	}
+
+	// Print the current operation in our stack, if any.
+	if e.Operation != "" {
+		buf.WriteString(e.Operation + ": ")
+	}
+
+	// Print the original error message, if any.
 	if e.Err != nil {
-		buf.WriteString(e.Err.Error())
-	} else {
-		if e.Code != "" {
-			buf.WriteString(fmt.Sprintf("<%s> ", e.Code))
-		}
+		buf.WriteString(e.Err.Error() + ", ")
+	}
+
+	// Print the message, if any.
+	if e.Message != "" {
 		buf.WriteString(e.Message)
 	}
 
-	return buf.String()
+	return strings.TrimSuffix(strings.TrimSpace(buf.String()), ",")
 }
 
 // New is a wrapper for the stdlib new function.
 func New(err error, message, code, op string) error {
-	_, file, line, _ := runtime.Caller(1)
-	pcs := make([]uintptr, 100)
-	_ = runtime.Callers(2, pcs)
-	return &Error{
-		Code:      code,
-		Message:   message,
-		Operation: op,
-		Err:       err,
-		fileLine:  file + ":" + strconv.Itoa(line),
-		pcs:       pcs,
-	}
-}
-
-func new(err error, message, code, op string) *Error {
-	_, file, line, _ := runtime.Caller(1)
-	pcs := make([]uintptr, 100)
-	_ = runtime.Callers(2, pcs)
-	return &Error{
-		Code:      code,
-		Message:   message,
-		Operation: op,
-		Err:       err,
-		fileLine:  file + ":" + strconv.Itoa(line),
-		pcs:       pcs,
-	}
+	return newError(err, message, code, op)
 }
 
 func Newf(err error, format string, args ...any) error {
@@ -112,61 +98,10 @@ func Errorf(format string, args ...any) {
 
 }
 
-// Code returns the code of the root error, if available.
-// Otherwise, returns INTERNAL.
-func Code(err error) string {
-	if err == nil {
-		return ""
-	} else if e, ok := err.(*Error); ok && e.Code != "" {
-		return e.Code
-	} else if ok && e.Err != nil {
-		return Code(e.Err)
-	}
-	return INTERNAL
-}
-
-// Message returns the human-readable message of the error,
-// if available. Otherwise, returns a generic error
-// message.
-func Message(err error) string {
-	if err == nil {
-		return ""
-	} else if e, ok := err.(*Error); ok && e.Message != "" {
-		return e.Message
-	} else if ok && e.Err != nil {
-		return Message(e.Err)
-	}
-	return GlobalError
-}
-
-// ToError Returns an application error from input. If The type
-// is not of type Error, nil will be returned.
-func ToError(err any) *Error {
-	switch v := err.(type) {
-	case *Error:
-		return v
-	case Error:
-		return &v
-	case error:
-		return &Error{Err: fmt.Errorf(v.Error())}
-	case string:
-		return &Error{Err: fmt.Errorf(v)}
-	default:
-		return nil
-	}
-}
-
-// Wrap returns an error annotating err with a stack trace
-// at the point Wrap is called, and the supplied message.
-// If err is nil, Wrap returns nil.
-func Wrap(err error, message string) error {
-	if err == nil {
-		return nil
-	}
-	return &Error{
-		Err:     err,
-		Message: message,
-	}
+// FileLine returns the file and line in which the error
+// occurred.
+func (e *Error) FileLine() string {
+	return e.fileLine
 }
 
 // HTTPStatusCode is a convenience method used to get the appropriate
@@ -217,16 +152,30 @@ func (e *Error) StackTrace() string {
 	return strings.Join(trace, "\n")
 }
 
-//func (e *Error) StackTraceSlice() []string {
-//	trace := make([]string, 0, 100)
-//	for err != nil {
-//		e, ok := err.(*Error)
-//		if ok {
-//			trace = append(trace, e.StackTraceNoFormat()...)
-//		} else {
-//			trace = append(trace, err.Error())
-//		}
-//		err = Unwrap(err)
-//	}
-//	return trace
-//}
+func (e *Error) StackTraceSlice() []string {
+	trace := make([]string, 0, 100)
+	rFrames := e.RuntimeFrames()
+	frame, ok := rFrames.Next()
+	line := strconv.Itoa(frame.Line)
+	trace = append(trace, frame.Function+"(): "+e.Message)
+
+	for ok {
+		trace = append(trace, frame.File+":"+line)
+		frame, ok = rFrames.Next()
+	}
+
+	return trace
+}
+
+// Wrap returns an error annotating err with a stack trace
+// at the point Wrap is called, and the supplied message.
+// If err is nil, Wrap returns nil.
+func Wrap(err error, message string) error {
+	if err == nil {
+		return nil
+	}
+	return &Error{
+		Err:     err,
+		Message: message,
+	}
+}
