@@ -85,23 +85,38 @@ func (e *Error) Error() string {
 }
 
 // New is a wrapper for the stdlib new function.
-func New(err error, message, code, op string) error {
-	return newError(err, message, code, op)
+func New(err error, message, op string) *Error {
+	return newError(err, message, DefaultCode, op)
 }
 
-func Newf(err error, format string, args ...any) error {
+// Newf - TODO
+func Newf(err error, format string, args ...any) *Error {
 	message := fmt.Sprintf(format, args...)
-	return New(err, message, DefaultCode, "")
+	return New(err, message, "")
 }
 
-func Errorf(format string, args ...any) {
-
+// Errorf - TODO
+func Errorf(err error, format string, args ...any) *Error {
+	return Newf(err, format, args...)
 }
 
 // FileLine returns the file and line in which the error
 // occurred.
 func (e *Error) FileLine() string {
 	return e.fileLine
+}
+
+// Wrap returns an error annotating err with a stack trace
+// at the point Wrap is called, and the supplied message.
+// If err is nil, Wrap returns nil.
+func Wrap(err error, message string) error {
+	if err == nil {
+		return nil
+	}
+	return &Error{
+		Err:     err,
+		Message: message,
+	}
 }
 
 // HTTPStatusCode is a convenience method used to get the appropriate
@@ -152,6 +167,8 @@ func (e *Error) StackTrace() string {
 	return strings.Join(trace, "\n")
 }
 
+// StackTraceSlice returns a string slice of the errors
+// stacktrace.
 func (e *Error) StackTraceSlice() []string {
 	trace := make([]string, 0, 100)
 	rFrames := e.RuntimeFrames()
@@ -165,17 +182,4 @@ func (e *Error) StackTraceSlice() []string {
 	}
 
 	return trace
-}
-
-// Wrap returns an error annotating err with a stack trace
-// at the point Wrap is called, and the supplied message.
-// If err is nil, Wrap returns nil.
-func Wrap(err error, message string) error {
-	if err == nil {
-		return nil
-	}
-	return &Error{
-		Err:     err,
-		Message: message,
-	}
 }

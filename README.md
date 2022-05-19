@@ -23,11 +23,19 @@ A drop-in replacement for Go errors, with some added sugar! Error handling in Go
 
 ## How to use
 
+## Available Error Codes
+
+
+
 ## Benchmarks
 
 ```bash
 go test -benchmem -bench .
 ```
+
+## Contributing
+
+
 
 
 ## Credits

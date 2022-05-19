@@ -23,6 +23,10 @@ cover: test # Run all the tests and opens the coverage report
 	go tool cover -html=coverage.out
 .PHONY: cover
 
+bench: # Runs benchmarks
+	go test -benchmem -bench .
+.PHONY: bench
+
 mock: # Make mocks keeping directory tree
 	rm -rf mocks \
 	&& mockery --name=Encoder --recursive --exported=true --output=./mocks \

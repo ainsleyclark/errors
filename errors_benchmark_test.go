@@ -11,6 +11,12 @@ import (
 
 func BenchmarkNew(b *testing.B) {
 	for i := 0; i < b.N; i++ {
-		_ = New(errors.New("error"), "message", INTERNAL, "op")
+		_ = New(errors.New("error"), "message", INTERNAL)
+	}
+}
+
+func BenchmarkNewInternal(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		_ = New(errors.New("error"), "message", INTERNAL)
 	}
 }
