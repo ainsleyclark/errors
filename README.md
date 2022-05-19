@@ -73,12 +73,6 @@ func (s *UserStore) Find(ctx context.Context, schema string, id int64) (core.Use
 }
 ```
 
-### Checking Types
-
-```go
-
-```
-
 ### Output
 
 Let's assume that an SQL error occurred during the execution of the query and no rows were returned. Without any context
@@ -95,6 +89,16 @@ However, by calling `err.Error()` on our wrapped error, it will return:
 ```
 
 Now we know exactly where the error occurred, why it occurred and what file line and method.
+
+### Checking Types
+
+Cast to an `Error` type
+
+```go
+err := errors.NewInternal(errors.New("error"), "My Message", "Operation")
+msg := errors.Messsage(err)
+fmt.Println(msg) // Output My Message
+```
 
 ## Available Error Codes
 
