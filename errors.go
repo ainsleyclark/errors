@@ -109,7 +109,7 @@ func (e *Error) FileLine() string {
 // Wrap returns an error annotating err with a stack trace
 // at the point Wrap is called, and the supplied message.
 // If err is nil, Wrap returns nil.
-func Wrap(err error, message string) error {
+func Wrap(err error, message string) *Error {
 	if err == nil {
 		return nil
 	}

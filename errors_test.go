@@ -9,6 +9,7 @@ import (
 	"net/http"
 	"os"
 	"reflect"
+	"strings"
 	"testing"
 )
 
@@ -24,19 +25,19 @@ func TestError_Error(t *testing.T) {
 	}{
 		"Normal": {
 			NewInternal(fmt.Errorf("error"), "message", "op"),
-			"<internal> " + wd + "/errors_test.go:26 - op: error, message",
+			"<internal> " + wd + "/errors_test.go:27 - op: error, message",
 		},
 		"Nil Operation": {
 			NewInternal(fmt.Errorf("error"), "message", ""),
-			"<internal> " + wd + "/errors_test.go:30 - error, message",
+			"<internal> " + wd + "/errors_test.go:31 - error, message",
 		},
 		"Nil Err": {
 			NewInternal(nil, "message", ""),
-			"<internal> " + wd + "/errors_test.go:34 - message",
+			"<internal> " + wd + "/errors_test.go:35 - message",
 		},
 		"Nil Message": {
 			NewInternal(fmt.Errorf("error"), "", ""),
-			"<internal> " + wd + "/errors_test.go:38 - error",
+			"<internal> " + wd + "/errors_test.go:39 - error",
 		},
 		"Message Error": {
 			&Error{Message: "message", Err: fmt.Errorf("err")},
@@ -70,10 +71,35 @@ func TestNew(t *testing.T) {
 	//}
 }
 
+func TestErrorf(t *testing.T) {
+
+}
+
+func TestError_FileLine(t *testing.T) {
+	e := &Error{fileLine: "fileline:20"}
+	got := e.FileLine()
+	want := "fileline:20"
+	if !reflect.DeepEqual(want, got) {
+		t.Fatalf("expecting %s, got %s", want, got)
+	}
+}
+
 func TestWrap(t *testing.T) {
-	//want := "message: error"
-	//got := Wrap(fmt.Errorf("error"), "message")
-	//assert.Equal(t, want, got.Error())
+	got := Wrap(fmt.Errorf("error"), "message")
+	if !reflect.DeepEqual("message", got.Message) {
+		t.Fatalf("expecting message, got %s", got)
+	}
+	if !reflect.DeepEqual(fmt.Errorf("error"), got.Err) {
+		t.Fatalf("expecting error, got %s", got)
+	}
+}
+
+func TestWrap_NilError(t *testing.T) {
+	got := Wrap(nil, "")
+	var want *Error
+	if !reflect.DeepEqual(got, want) {
+		t.Fatalf("expecting %s, got %s", want, got)
+	}
 }
 
 func TestError_HTTPStatusCode(t *testing.T) {
@@ -122,7 +148,7 @@ func TestError_HTTPStatusCode(t *testing.T) {
 }
 
 func TestError_ProgramCounters(t *testing.T) {
-	e := newError(fmt.Errorf("error"), "message", INTERNAL, "op")
+	e := New(fmt.Errorf("error"), "message", "op")
 	got := e.ProgramCounters()
 	want := 100
 	if !reflect.DeepEqual(len(got), want) {
@@ -131,19 +157,29 @@ func TestError_ProgramCounters(t *testing.T) {
 }
 
 func TestError_RuntimeFrames(t *testing.T) {
-	e := newError(fmt.Errorf("error"), "message", INTERNAL, "op")
+	e := New(fmt.Errorf("error"), "message", "op")
 	got := e.RuntimeFrames()
-	fmt.Println(got.Next())
-	//if !reflect.DeepEqual(len(got), want) {
-	//	t.Fatalf("expecting %d, got %d", want, got)
-	//}
+	frame, _ := got.Next()
+	want := "github.com/ainsleyclark/errors.TestError_RuntimeFrames"
+	if !reflect.DeepEqual(want, frame.Function) {
+		t.Fatalf("expecting %s, got %s", want, frame.Function)
+	}
 }
 
-//func TestError_StackTrace(t *testing.T) {
-//	e := new(fmt.Errorf("error"), "message", INTERNAL, "op")
-//	got := e.StackTrace()
-//	fmt.Println(got)
-//	//if !reflect.DeepEqual(len(got), want) {
-//	//	t.Fatalf("expecting %d, got %d", want, got)
-//	//}
-//}
+func TestError_StackTrace(t *testing.T) {
+	e := New(fmt.Errorf("error"), "message", "op")
+	got := e.StackTrace()
+	want := "github.com/ainsleyclark/errors.TestError_StackTrace(): message"
+	if !strings.Contains(got, want) {
+		t.Fatalf("expecting %s to contain, got %s", want, got)
+	}
+}
+
+func TestError_StackTraceSlice(t *testing.T) {
+	e := New(fmt.Errorf("error"), "message", "op")
+	got := e.StackTraceSlice()[0]
+	want := "github.com/ainsleyclark/errors.TestError_StackTrace(): message"
+	if reflect.DeepEqual(want, got) {
+		t.Fatalf("expecting %s, got %s", want, got)
+	}
+}
