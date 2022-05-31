@@ -177,4 +177,4 @@ Shout out to the incredible [Maria Letta](https://github.com/MariaLetta) for her
 
 ## Licence
 
-Code Copyright 2021 Errors. Code released under the [MIT Licence](LICENSE).
+Code Copyright 2022 Errors. Code released under the [MIT Licence](LICENSE).
