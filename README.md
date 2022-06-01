@@ -1,13 +1,13 @@
 <div align="center">
 <img height="250" src="res/logo.svg" alt="Errors Logo" />
-	
+
 [![made-with-Go](https://img.shields.io/badge/Made%20with-Go-1f425f.svg)](http://golang.org)
 [![Go Report Card](https://goreportcard.com/badge/github.com/ainsleyclark/errors)](https://goreportcard.com/report/github.com/ainsleyclark/errors)
 [![Maintainability](https://api.codeclimate.com/v1/badges/b3afd7bf115341995077/maintainability)](https://codeclimate.com/github/ainsleyclark/errors/maintainability)
 [![Test](https://github.com/ainsleyclark/errors/actions/workflows/test.yml/badge.svg?branch=master)](https://github.com/ainsleyclark/errors/actions/workflows/test.yml)
 [![codecov](https://codecov.io/gh/ainsleyclark/errors/branch/master/graph/badge.svg?token=K27L8LS7DA)](https://codecov.io/gh/ainsleyclark/errors)
 [![go.dev reference](https://img.shields.io/badge/go.dev-reference-007d9c?logo=go&logoColor=white&style=flat)](https://pkg.go.dev/github.com/ainsleyclark/errors)
-	
+
 </div>
 
 # 🫠 Errors
@@ -140,6 +140,7 @@ missing, please open a [pull request](https://github.com/ainsleyclark/errors/pul
 | Code            | Value                | Notes                          |
 |-----------------|:---------------------|:-------------------------------|
 | CONFLICT        | `"conflict"`         | An action cannot be performed. |
+| CONFLICT        | `"internal"`         | Error within the application.  |
 | INVALID         | `"invalid"`          | Validation failed.             |
 | NOTFOUND        | `"not_found"`        | Entity does not exist.         |
 | UNKNOWN         | `"unknown"`          | Application unknown error.     |
