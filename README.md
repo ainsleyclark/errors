@@ -140,7 +140,7 @@ missing, please open a [pull request](https://github.com/ainsleyclark/errors/pul
 | Code            | Value                | Notes                          |
 |-----------------|:---------------------|:-------------------------------|
 | CONFLICT        | `"conflict"`         | An action cannot be performed. |
-| CONFLICT        | `"internal"`         | Error within the application.  |
+| INTERNAL        | `"internal"`         | Error within the application.  |
 | INVALID         | `"invalid"`          | Validation failed.             |
 | NOTFOUND        | `"not_found"`        | Entity does not exist.         |
 | UNKNOWN         | `"unknown"`          | Application unknown error.     |
