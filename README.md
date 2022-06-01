@@ -9,7 +9,7 @@
 [![codecov](https://codecov.io/gh/ainsleyclark/errors/branch/master/graph/badge.svg?token=K27L8LS7DA)](https://codecov.io/gh/ainsleyclark/errors)
 [![go.dev reference](https://img.shields.io/badge/go.dev-reference-007d9c?logo=go&logoColor=white&style=flat)](https://pkg.go.dev/github.com/ainsleyclark/errors)
 
-# Errors
+# 🫠 Errors
 
 A drop-in replacement for Go errors, with some added sugar! Error handling in Go made easy with codes, messages and
 more. Failure is your domain!
