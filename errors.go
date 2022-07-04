@@ -7,6 +7,8 @@ package errors
 
 import (
 	"bytes"
+	"encoding/json"
+	"errors"
 	"fmt"
 	"net/http"
 	"runtime"
@@ -186,4 +188,47 @@ func (e *Error) StackTraceSlice() []string {
 	}
 
 	return trace
+}
+
+// wrappingError is the wrapping error features the error
+// and file line in strings suitable for json.Marshal.
+type wrappingError struct {
+	Code      string `json:"code"`
+	Message   string `json:"message"`
+	Operation string `json:"operation"`
+	Err       string `json:"error"`
+	FileLine  string `json:"file_line"`
+}
+
+// MarshalJSON implements encoding/Marshaller to wrap the
+// error as a string if there is one.
+func (e *Error) MarshalJSON() ([]byte, error) {
+	err := wrappingError{
+		Code:      e.Code,
+		Message:   e.Message,
+		Operation: e.Operation,
+	}
+	if e.Err != nil {
+		err.Err = e.Err.Error()
+		err.FileLine = e.fileLine
+	}
+	return json.Marshal(err)
+}
+
+// UnmarshalJSON implements encoding/Marshaller to unmarshal
+// the wrapping error to type Error.
+func (e *Error) UnmarshalJSON(data []byte) error {
+	var err wrappingError
+	mErr := json.Unmarshal(data, &err)
+	if mErr != nil {
+		return mErr
+	}
+	e.Code = err.Code
+	e.Message = err.Message
+	e.Operation = err.Operation
+	e.fileLine = err.FileLine
+	if err.Err != "" {
+		e.Err = errors.New(err.Err)
+	}
+	return nil
 }
