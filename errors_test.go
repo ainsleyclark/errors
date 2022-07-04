@@ -222,7 +222,7 @@ func TestError_MarshalJSON(t *testing.T) {
 		t.Run(name, func(t *testing.T) {
 			got, err := test.input.MarshalJSON()
 			if err != nil {
-				if !strings.Contains(err.Error(), fmt.Sprintf("%s", test.want)) {
+				if !strings.Contains(err.Error(), test.want) {
 					t.Fatalf("expecting %s to contain, got %s", test.want, got)
 				}
 				return
