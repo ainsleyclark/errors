@@ -5,6 +5,7 @@
 package errors
 
 import (
+	"errors"
 	"fmt"
 	"net/http"
 	"os"
@@ -25,19 +26,19 @@ func TestError_Error(t *testing.T) {
 	}{
 		"Normal": {
 			NewInternal(fmt.Errorf("error"), "message", "op"),
-			"<internal> " + wd + "/errors_test.go:27 - op: error, message",
+			"<internal> " + wd + "/errors_test.go:28 - op: error, message",
 		},
 		"Nil Operation": {
 			NewInternal(fmt.Errorf("error"), "message", ""),
-			"<internal> " + wd + "/errors_test.go:31 - error, message",
+			"<internal> " + wd + "/errors_test.go:32 - error, message",
 		},
 		"Nil Err": {
 			NewInternal(nil, "message", ""),
-			"<internal> " + wd + "/errors_test.go:35 - message",
+			"<internal> " + wd + "/errors_test.go:36 - message",
 		},
 		"Nil Message": {
 			NewInternal(fmt.Errorf("error"), "", ""),
-			"<internal> " + wd + "/errors_test.go:39 - error",
+			"<internal> " + wd + "/errors_test.go:40 - error",
 		},
 		"Message Error": {
 			&Error{Message: "message", Err: fmt.Errorf("err")},
@@ -199,5 +200,81 @@ func TestError_StackTraceSlice(t *testing.T) {
 	want := "github.com/ainsleyclark/errors.TestError_StackTrace(): message"
 	if reflect.DeepEqual(want, got) {
 		t.Fatalf("expecting %s, got %s", want, got)
+	}
+}
+
+func TestError_MarshalJSON(t *testing.T) {
+	tt := map[string]struct {
+		input *Error
+		want  string
+	}{
+		"With Error": {
+			NewInternal(errors.New("error"), "message", "op"),
+			`{"code":"internal","message":"message","operation":"op","error":"error"`,
+		},
+		"No Error": {
+			NewInternal(nil, "message", "op"),
+			`{"code":"internal","message":"message","operation":"op","error":""`,
+		},
+	}
+
+	for name, test := range tt {
+		t.Run(name, func(t *testing.T) {
+			got, err := test.input.MarshalJSON()
+			if err != nil {
+				if !strings.Contains(err.Error(), test.want) {
+					t.Fatalf("expecting %s to contain, got %s", test.want, got)
+				}
+				return
+			}
+			if !strings.Contains(string(got), test.want) {
+				t.Fatalf("expecting %s, got %s", test.want, string(got))
+			}
+		})
+	}
+}
+
+func TestError_UnmarshalJSON(t *testing.T) {
+	tt := map[string]struct {
+		input string
+		want  any
+	}{
+		"Marshal Error": {
+			`{"code":123","message":"message","operation":"op","error":"error","file_line":""}`,
+			"invalid character",
+		},
+		"With Error": {
+			`{"code":"internal","message":"message","operation":"op","error":"error","file_line":""}`,
+			Error{
+				Code:      "internal",
+				Message:   "message",
+				Operation: "op",
+				Err:       errors.New("error"),
+			},
+		},
+		"Without Error": {
+			`{"code":"internal","message":"message","operation":"op","error":"","file_line":""}`,
+			Error{
+				Code:      "internal",
+				Message:   "message",
+				Operation: "op",
+			},
+		},
+	}
+
+	for name, test := range tt {
+		t.Run(name, func(t *testing.T) {
+			e := &Error{}
+			got := e.UnmarshalJSON([]byte(test.input))
+			if got != nil {
+				if !strings.Contains(got.Error(), fmt.Sprintf("%s", test.want)) {
+					t.Fatalf("expecting %s to contain, got %s", test.want, got)
+				}
+				return
+			}
+			if !reflect.DeepEqual(test.want, *e) {
+				t.Fatalf("expecting %+v, got %+v", test.want, e)
+			}
+		})
 	}
 }
