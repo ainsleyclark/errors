@@ -52,7 +52,7 @@ type Error struct {
 	// Defines what operation is currently being run.
 	Operation string `json:"operation" bson:"op"`
 	// The error that was returned from the caller.
-	Err      error `json:"error" bson:"err"`
+	Err      error `json:"error" bson:"error"`
 	fileLine string
 	pcs      []uintptr
 }
