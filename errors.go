@@ -7,6 +7,7 @@ package errors
 
 import (
 	"bytes"
+	"database/sql/driver"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -231,4 +232,24 @@ func (e *Error) UnmarshalJSON(data []byte) error {
 		e.Err = errors.New(err.Err)
 	}
 	return nil
+}
+
+// Scan implements the sql.Scanner interface.
+func (e *Error) Scan(value any) error {
+	if value == nil {
+		return nil
+	}
+	buf, ok := value.([]byte)
+	if !ok || buf == nil {
+		return fmt.Errorf("scan not supported for *errors.Error")
+	}
+	return json.Unmarshal(buf, e)
+}
+
+// Value implements the driver.Valuer interface.
+func (e *Error) Value(value any) (driver.Value, error) {
+	if value == nil {
+		return nil, nil
+	}
+	return json.Marshal(value)
 }

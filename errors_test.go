@@ -278,3 +278,59 @@ func TestError_UnmarshalJSON(t *testing.T) {
 		})
 	}
 }
+
+func TestError_Scan(t *testing.T) {
+	tt := map[string]struct {
+		input any
+		want  any
+	}{
+		"Success": {
+			[]byte(`{"code": "code"}`),
+			nil,
+		},
+		"Nil": {
+			nil,
+			nil,
+		},
+		"Unsupported Scan": {
+			"wrong",
+			"scan not supported for *errors.Error",
+		},
+	}
+
+	for name, test := range tt {
+		t.Run(name, func(t *testing.T) {
+			e := &Error{}
+			got := e.Scan(test.input)
+			if got != nil {
+				if !strings.Contains(got.Error(), fmt.Sprintf("%s", test.want)) {
+					t.Fatalf("expecting %s to contain, got %s", test.want, got)
+				}
+				return
+			}
+			if !reflect.DeepEqual(test.want, got) {
+				t.Fatalf("expecting %+v, got %+v", test.want, e)
+			}
+		})
+	}
+}
+
+func TestError_Value(t *testing.T) {
+	e := &Error{}
+
+	t.Run("Success", func(t *testing.T) {
+		val, _ := e.Value(e)
+		want := `{"code":"","message":"","operation":"","error":"","file_line":""}`
+		got := val.([]byte)
+		if !reflect.DeepEqual(want, string(got)) {
+			t.Fatalf("expecting %+v, got %s", want, string(got))
+		}
+	})
+
+	t.Run("Nil", func(t *testing.T) {
+		got, _ := e.Value(nil)
+		if !reflect.DeepEqual(nil, got) {
+			t.Fatalf("expecting %+v, got %s", nil, got)
+		}
+	})
+}
