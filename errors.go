@@ -247,9 +247,6 @@ func (e *Error) Scan(value any) error {
 }
 
 // Value implements the driver.Valuer interface.
-func (e *Error) Value(value any) (driver.Value, error) {
-	if value == nil {
-		return nil, nil
-	}
-	return json.Marshal(value)
+func (e *Error) Value() (driver.Value, error) {
+	return json.Marshal(e)
 }

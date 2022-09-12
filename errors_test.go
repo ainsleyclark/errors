@@ -317,20 +317,12 @@ func TestError_Scan(t *testing.T) {
 
 func TestError_Value(t *testing.T) {
 	e := &Error{}
-
 	t.Run("Success", func(t *testing.T) {
-		val, _ := e.Value(e)
+		val, _ := e.Value()
 		want := `{"code":"","message":"","operation":"","error":"","file_line":""}`
 		got := val.([]byte)
 		if !reflect.DeepEqual(want, string(got)) {
 			t.Fatalf("expecting %+v, got %s", want, string(got))
-		}
-	})
-
-	t.Run("Nil", func(t *testing.T) {
-		got, _ := e.Value(nil)
-		if !reflect.DeepEqual(nil, got) {
-			t.Fatalf("expecting %+v, got %s", nil, got)
 		}
 	})
 }
